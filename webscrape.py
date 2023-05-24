@@ -1,8 +1,11 @@
 from bs4 import BeautifulSoup
 import requests
 
+#TODO: implement a way so that the script scrapes from several websites
 baseUrl = "https://mangakakalot.com/search/story/"
 
+#FUTURETODO: Find a way to implement a frontend that takes input from the user
+#and then sends that input into this script (or a future backend)
 userSearch = input()
 
 r = requests.get(baseUrl + userSearch.replace(" ", "_"))
@@ -18,3 +21,9 @@ for links in links_in_body:
     # print(links.a.prettify())
     # print(links.a.img.prettify())
     print(links.a.img['alt'])
+
+#TODO: Put the title, link, and other info (author, num of chapters) into variables
+#TODO: And then put them into a dictionary, to then transform it into JSON to send to the frontend
+#TODO: Find a way to customize that transformed JSON to also include whether the user has saved that manga into their favorites
+
+#FUTURETODO: Learn to create a database for the user's saved searches/manga
