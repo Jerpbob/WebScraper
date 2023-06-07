@@ -5,7 +5,7 @@ import lxml
 
 
 # TODO: implement a way so that the script scrapes from several websites
-def mangakakalot_manga_webscraper(user_search = "kaguya sama"):
+def mangakakalot_manga_search_webscraper(user_search = "kaguya sama"):
     base_url = "https://mangakakalot.com/search/story/"
 
     # FUTURETODO: Find a way to implement a frontend that takes input from the user
@@ -90,7 +90,7 @@ def mangakakalot_manga_webscraper(user_search = "kaguya sama"):
 
 
 if __name__ == "__main__":
-    mangakakalot_manga_webscraper()
+    mangakakalot_manga_search_webscraper()
 
 # TODO: Put the title, link, and other info (author, num of chapters) into variables
 # TODO: And then put them into a dictionary, to then transform it into JSON to send to the frontend
