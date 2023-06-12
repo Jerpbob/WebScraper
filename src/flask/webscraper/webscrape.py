@@ -3,6 +3,7 @@ import requests
 import json
 import lxml
 
+
 # TODO: implement a way so that the script scrapes from several websites
 # --- OLD CODE JUST TO HELP ME STRUCTURE THE LAYOUT OF THE PROJECT AND DEVELOPMENT OF FUNCTIONS --- #
 # def mangakakalot_manga_search_webscraper(user_search = "kaguya sama"):
@@ -92,6 +93,50 @@ import lxml
 # if __name__ == "__main__":
 #     mangakakalot_manga_search_webscraper()
 # --- THIS CODE IS ONLY USED TO HELP PUT THE IDEA OF THE FUNCTIONS INTO SOMETHING TANGIBLE --- #
+
+def grab_chap_info(manga_id):
+    manga_info_dict = dict()
+    author_s = list()
+    tags = list()
+
+    # request from url with id input
+    base_url = "https://chapmanganato.com/manga-"
+    link_url = base_url + manga_id
+    link = requests.get(link_url)
+    soup = BeautifulSoup(link.text, "lxml")
+
+    # traverse through scraped html and add scraped info into the corresponding lists
+    soup = soup.body.find(class_="body-site") \
+        .find(class_="container-main").find(class_="panel-story-info").find(class_="story-info-right")
+    manga_info = soup.tbody.find_all(class_="table-value")
+    name = soup.h1.text
+    authors = manga_info[1].find_all("a")
+    for a in authors:
+        author_s.append(a.text)
+    status = manga_info[2].text
+    tag = manga_info[3].find_all("a")
+    for t in tag:
+        tags.append(t.text)
+
+    # add all scraped info into dictionary and turn into json
+    manga_info_dict["Name"] = name
+    manga_info_dict["Author/s"] = author_s
+    manga_info_dict["Status"] = status
+    manga_info_dict["Tag/s"] = tags
+    manga_json = json.dumps(manga_info_dict)
+    return manga_json
+
+
+def webscraper_with_counter(user_search):
+    base_url = "https://mangakakalot.com/search/story/"
+    r = requests.get(base_url + user_search.replace(" ", "_"))
+    soup = BeautifulSoup(r.text, 'lxml')
+    body = soup.body
+    links = body.find(class_="story_item")
+    link = links.a['href']
+    num_links = len(body.find_all(class_="story_item"))
+    manga_id = link[-8:]
+    return link, num_links, manga_id
 
 # TODO: And then put them into a dictionary, to then transform it into JSON to send to the frontend
 # TODO: Find way to customize transformed JSON to include whether the user has saved that manga into their favorites
