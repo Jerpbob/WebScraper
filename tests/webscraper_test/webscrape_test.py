@@ -31,6 +31,7 @@ class TestWebscraper:
         num_links = len(body.find_all(class_="story_item"))
         return link, num_links
 
+    # Following tests for webscraper function
     def test_webscraper_one(self, user_search="Kaguya sama"):
         link = self.webscraper(user_search=user_search)
 
@@ -45,6 +46,7 @@ class TestWebscraper:
         with pytest.raises(Exception):
             link = self.webscraper(user_search=user_search)
 
+    # Following tests for webscrape_counter function
     def test_webscraper_four(self, user_search="Kaguya sama"):
         num_link = self.webscrape_counter(user_search=user_search)
 
@@ -64,6 +66,7 @@ class TestWebscraper:
         with pytest.raises(Exception):
             num_link = self.webscraper_counter(user_search=user_search)
 
+    # Following tests for webscraper_with_counter function
     def test_webscraper_seven(self, user_search="Kaguya sama"):
         link, num_link = self.webscraper_with_counter(user_search=user_search)
 
