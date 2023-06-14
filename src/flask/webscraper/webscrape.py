@@ -1,6 +1,6 @@
 from bs4 import BeautifulSoup
 import requests
-import json
+# import json
 import lxml
 
 
@@ -123,8 +123,9 @@ def grab_chap_info(manga_id):
     manga_info_dict["Author/s"] = author_s
     manga_info_dict["Status"] = status
     manga_info_dict["Tag/s"] = tags
-    manga_json = json.dumps(manga_info_dict)
-    return manga_json
+    # manga_json = json.dumps(manga_info_dict)
+    # return manga_json
+    return manga_info_dict
 
 
 def search_scraper(user_search):
@@ -153,8 +154,10 @@ def search_scraper(user_search):
             manga_id = link_url[-8:]
             link_list.append([link_url, manga_id])
     # turn list into json
-    link_list_json = json.dumps(link_list)
-    return link_list_json
+    # link_list_json = json.dumps(link_list)
+    # return link_list_json
+
+    return link_list
 
 # TODO: And then put them into a dictionary, to then transform it into JSON to send to the frontend
 # TODO: Find way to customize transformed JSON to include whether the user has saved that manga into their favorites
