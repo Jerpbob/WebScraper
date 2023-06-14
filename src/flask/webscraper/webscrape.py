@@ -144,7 +144,7 @@ def search_scraper(user_search):
     # top results, usually the top 8
     num_links = len(links)
     if num_links > 8:
-        for link in links[:7]:
+        for link in links[:8]:
             link_url = link.a['href']
             manga_id = link_url[-8:]
             link_list.append([link_url, manga_id])
