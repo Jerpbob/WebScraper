@@ -152,7 +152,9 @@ def search_scraper(user_search):
             link_url = link.a['href']
             manga_id = link_url[-8:]
             link_list.append([link_url, manga_id])
-    return link_list
+    # turn list into json
+    link_list_json = json.dumps(link_list)
+    return link_list_json
 
 # TODO: And then put them into a dictionary, to then transform it into JSON to send to the frontend
 # TODO: Find way to customize transformed JSON to include whether the user has saved that manga into their favorites
