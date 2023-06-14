@@ -34,6 +34,26 @@ def webscraper_with_counter(user_search):
     return link, num_links, manga_id
 
 
+def webscraper_with_limit_8(user_search):
+    link_list = list()
+    r = requests.get(base_url + user_search.replace(" ", "_"))
+    soup = BeautifulSoup(r.text, 'lxml')
+    body = soup.body
+    links = body.find_all(class_="story_item")
+    num_links = len(links)
+    if num_links > 8:
+        for link in links[:7]:
+            link_url = link.a['href']
+            manga_id = link_url[-8:]
+            link_list.append([link_url, manga_id])
+    else:
+        for link in links:
+            link_url = link.a['href']
+            manga_id = link_url[-8:]
+            link_list.append([link_url, manga_id])
+    return link_list
+
+
 class TestWebscraper:
 
     # Following tests for webscraper function
@@ -86,3 +106,17 @@ class TestWebscraper:
         assert num_link == 3
         assert manga_id == "wd951838"
 
+    # Following tests for webscraper_with_limit_8
+    def test_webscraper_nine(self, user_search="Kaguya sama"):
+        link_list = list()
+        link, num_link, manga_id = webscraper_with_counter(user_search=user_search)
+        link_list.append(link)
+        link_list.append(manga_id)
+        assert webscraper_with_limit_8(user_search=user_search)[0] == link_list
+
+    def test_webscraper_ten(self, user_search="one punch man"):
+        link_list = list()
+        link, num_link, manga_id = webscraper_with_counter(user_search=user_search)
+        link_list.append(link)
+        link_list.append(manga_id)
+        assert webscraper_with_limit_8(user_search=user_search)[0] == link_list

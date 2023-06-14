@@ -127,16 +127,32 @@ def grab_chap_info(manga_id):
     return manga_json
 
 
-def webscraper_with_counter(user_search):
+def search_scraper(user_search):
     base_url = "https://mangakakalot.com/search/story/"
+
+    # list to hold info for the links
+    link_list = list()
+
+    # request from url to scrape the html to grab links and corresponding info
     r = requests.get(base_url + user_search.replace(" ", "_"))
     soup = BeautifulSoup(r.text, 'lxml')
     body = soup.body
-    links = body.find(class_="story_item")
-    link = links.a['href']
-    num_links = len(body.find_all(class_="story_item"))
-    manga_id = link[-8:]
-    return link, num_links, manga_id
+    links = body.find_all(class_="story_item")
+
+    # limit the search results to 8 because in reality, the user really only looks at the
+    # top results, usually the top 8
+    num_links = len(links)
+    if num_links > 8:
+        for link in links[:7]:
+            link_url = link.a['href']
+            manga_id = link_url[-8:]
+            link_list.append([link_url, manga_id])
+    else:
+        for link in links:
+            link_url = link.a['href']
+            manga_id = link_url[-8:]
+            link_list.append([link_url, manga_id])
+    return link_list
 
 # TODO: And then put them into a dictionary, to then transform it into JSON to send to the frontend
 # TODO: Find way to customize transformed JSON to include whether the user has saved that manga into their favorites
